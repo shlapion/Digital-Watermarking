@@ -55,7 +55,7 @@ endfunction
 clear;
 
 instr = "Hi, some test text!";
-instr2 = "Hi, some more text here, longer than the original one"
+instr2 = "Hi, some more text here, longer than the original one";
 
 pos = 1;
 
@@ -75,14 +75,6 @@ WMWork2 = embedBits(imOrg, bitstr2, pos);
 disp(typeinfo(WMWork));
 imwrite(WMWork,"Solution/t1.png");
 imwrite(WMWork,"Solution/t2.png");
-
-%disp('get image');
-%imWM=imread('tttttt.png');
-%disp('get bits');
-%bitseq = getBits(imWM, pos);
-%disp('get string');
-%str = toString(bitseq);
-%disp(str);
 
 
 break;
