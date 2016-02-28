@@ -1,0 +1,9 @@
+clc; 
+clear all; 
+close all;
+
+image = imread('t1.png');
+
+cropImg = imcrop(image,[643,1043, 643, 1043]);
+
+imshow(cropImg);
