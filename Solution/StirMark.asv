@@ -1,0 +1,28 @@
+clc; 
+clear all; 
+close all;
+
+image = imread ('t1.png');
+shearingFactor = 0.01;
+
+
+strechImage = imresize(image,0.999);
+
+shearedImage = maketform('affine', [1 0 0; shearingFactor 1 0; 0 0 1] );
+
+figure;
+imshow(strechImage);
+title('Streached image by a factor of 0.999');
+
+figure;
+imshowpair(image, strechImage,'diff');
+title('DIfference between original image and streched image');
+
+figure; 
+imshow(shearedImage);
+
+
+
+
+
+
