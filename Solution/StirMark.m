@@ -16,6 +16,15 @@ rotatedImage = imrotate(image,-0.001,'bilinear');
 imageNoise = imnoise(image,'gaussian', 0.01, 0.0001);
 
 
+strechImageStirMark = imresize(image,0.999);
+shearedImageStirMark = imwarp(strechImageStirMark,tfrom);
+rotatedImageStirMark = imrotate(shearedImageStirMark,-0.001,'bilinear');
+imageNoiseStirMark = imnoise(rotatedImageStirMark,'gaussian', 0.01, 0.0001);
+
+
+
+
+
 figure;
 imshow(strechImage);
 title('Streached image by a factor of 0.999');
@@ -49,7 +58,13 @@ figure;
 imshowpair(image, imageNoise,'diff');
 title('Difference between original image and noisy image');
 
+figure;
+imshow(imageNoiseStirMark);
+title('Image after aplying StirMark attack');
 
+figure;
+imshowpair(image, imageNoiseStirMark,'diff');
+title('Difference between original image and StirMark attacked image');
 
 
 
