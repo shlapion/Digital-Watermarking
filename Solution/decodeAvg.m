@@ -121,18 +121,9 @@ clear;
 
 pos = 1;
 
-%disp('get image');
-%imOrg=imread('test01.jpg');
-%disp(typeinfo(imOrg));
-%disp('get bitseq');
-%bitstr = toBits(instr);
-%disp('imbed');
-%WMWork = embedBits(imOrg, bitstr, pos);
-%disp(typeinfo(WMWork));
-%imwrite(WMWork,"tttttt.png");
 
 disp('get image');
-imWM=imread('avg.png');
+imWM=imread('imgTo99.5.png');
 disp('get bits');
 bitseq = getBits(imWM, pos);
 disp('get string');

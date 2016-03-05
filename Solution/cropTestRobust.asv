@@ -1,0 +1,17 @@
+clc; 
+clear all; 
+close all;
+
+image = imread('t1.png');
+[height,width,colordepth] = size(image);
+halfWidth = width/2;
+halfHeight = height/2;
+prec = 0.05;
+s1= 'imgTo';
+
+for n = 1:15
+cropImg = imcrop(image,[halfWidth - ((width-(width*0.05))/2),halfHeight - ((height-(height*0.05))/2),width-(width*0.05),height-(height*0.05)]);
+imwrite(cropImg,strcat(s1,num2str(100-(prec*100))));
+prec = prec + 0.05;
+end
+
