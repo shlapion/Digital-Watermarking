@@ -20,7 +20,7 @@ strechImageStirMark = imresize(image,0.999);
 shearedImageStirMark = imwarp(strechImageStirMark,tfrom);
 rotatedImageStirMark = imrotate(shearedImageStirMark,-0.001,'bilinear');
 imageNoiseStirMark = imnoise(rotatedImageStirMark,'gaussian', 0.01, 0.0001);
-imwrite(imageNoiseStirMark,'stirMark.jpg', 'quality',50);
+imwrite(imageNoiseStirMark,'stirMark.jpg', 'quality',75);
 
 
 
