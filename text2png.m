@@ -55,8 +55,8 @@ endfunction
 clear;
 
 instr = "Hi, some test text!";
-instr2 = "Hi, some more text in order to prove security";
-
+instr2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed volutpat malesuada erat, et sagittis metus maximus eget. Duis bibendum turpis justo. In semper, est quis vestibulum dictum, mi magna volutpat mauris, ac semper risus massa sit amet felis. In eu tortor vel turpis volutpat ullamcorper et in quam. Aliquam non elit quis elit pretium finibus id nec magna. Donec tincidunt, felis at finibus iaculis, dolor nunc efficitur risus, quis lobortis velit velit sit amet odio. Integer sollicitudin augue id ex accumsan, ac ultrices lorem porta. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed sit amet luctus ligula. Donec semper malesuada erat, non feugiat nulla placerat ac. In maximus varius mollis.";
+instr3 = "H";
 
 pos = 1;
 
@@ -67,16 +67,19 @@ disp(typeinfo(imOrg));
 disp('get bitseq');
 bitstr = toBits(instr);
 bitstr2 = toBits(instr2);
+bitstr3 = toBits(instr3);
 
 
 disp('imbed');
 WMWork = embedBits(imOrg, bitstr, pos);
 WMWork2 = embedBits(imOrg, bitstr2, pos);
+WMWork3 = embedBits(imOrg, bitstr3, pos);
 
 
 disp(typeinfo(WMWork));
-imwrite(WMWork,"Solution/w1.png");
-imwrite(WMWork2,"Solution/w2.png");
+imwrite(WMWork,"Solution/4/work.png");
+imwrite(WMWork2,"Solution/4/long.png");
+imwrite(WMWork3,"Solution/4/short.png");
 
 
 
