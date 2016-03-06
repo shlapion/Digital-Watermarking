@@ -55,7 +55,8 @@ endfunction
 clear;
 
 instr = "Hi, some test text!";
-instr2 = "Hi, some more text here, longer than the original one";
+instr2 = "Hi, some more text in order to prove security";
+
 
 pos = 1;
 
@@ -67,14 +68,16 @@ disp('get bitseq');
 bitstr = toBits(instr);
 bitstr2 = toBits(instr2);
 
+
 disp('imbed');
 WMWork = embedBits(imOrg, bitstr, pos);
 WMWork2 = embedBits(imOrg, bitstr2, pos);
 
 
 disp(typeinfo(WMWork));
-imwrite(WMWork,"Solution/t1.png");
-imwrite(WMWork,"Solution/t2.png");
+imwrite(WMWork,"Solution/w1.png");
+imwrite(WMWork2,"Solution/w2.png");
+
 
 
 break;

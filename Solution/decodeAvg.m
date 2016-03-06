@@ -123,7 +123,7 @@ pos = 1;
 
 
 disp('get image');
-imWM=imread('imgTo99.5.png');
+imWM=imread('rm.png');
 disp('get bits');
 bitseq = getBits(imWM, pos);
 disp('get string');
