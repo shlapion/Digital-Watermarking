@@ -30,14 +30,12 @@ function bitstr = toBits(str)
   endfor
 endfunction
 
-function resMtrx = toString(bitstr)
+function str = toString(bitstr)
   [q, maxanz] = size(bitstr);
   str='';
   subbytsstr = [];
   start = 1;
   startok = 0;
-  
-  resMtrx = [];
   while startok<32 && start < maxanz
     while startok<16 && start < maxanz
       if bitstr(start)==0
@@ -56,7 +54,7 @@ function resMtrx = toString(bitstr)
       start++;
     endwhile
   endwhile
-  aktpos = 33;
+  aktpos = start;
   while aktpos <= maxanz
     nextA = 0;
     anzN = 0;
@@ -79,7 +77,6 @@ function resMtrx = toString(bitstr)
       byte = 0;
       for I=1:8
         byte=2*byte + subA(I);
-        resMtrx = [resMtrx, subA(I)];
       endfor
       subbytsstr = [subbytsstr, byte];
     endif
@@ -116,79 +113,59 @@ function bitSeq = getBits(im, pos)
       bitSeq = [bitSeq, mod(im(x,y,pos),2)];
     endfor
   endfor
-endfunction
+ endfunction
 
-function str = toStr(bitstr)
-  aktpos=0  
-  [q, maxanz] = size(bitstr);
-  while aktpos <= maxanz
-    nextA = 0;
-    anzN = 0;
-    subA = [];
-    while nextA<8 && aktpos <= maxanz
-      subA = [subA, bitstr(aktpos)];
-      if bitstr(aktpos)==0
-        anzN++;
-      else
-        anzN=0;
-      endif
-      nextA++;
-      aktpos++;
-    endwhile
-    if anzN==8 
-      aktpos=maxanz+1;
-    elseif nextA != 8 
-      aktpos=maxanz+1;
-    else
-      byte = 0;
-      for I=1:8
-        byte=2*byte + subA(I);
-        resMtrx = [resMtrx, subA(I)];
-      endfor
-      subbytsstr = [subbytsstr, byte];
-    endif
-  endwhile
-  [q, anzchar] = size(subbytsstr);
-  if anzchar>0
-    str = char(subbytsstr);
-  endif
-endfunction
+
 
 clear;
 
 instr = "Hi, some test text!";
 
 pos = 1;
+ imOrg=imread('test01.jpg');
 
-disp('get image');
-imOrg=imread('test01.jpg');
+ msg = toBits(instr);
+ msg = reshape(msg, 12, 16);
+  for I = 1:3
+    z = zeros(1,16);
+    msg = [msg;z];
+  endfor
+%msg = [msg,zeros(1,48)];
+%msg = reshape(msg, 15, 16);
 
-msg = toBits(instr);
-% msg = reshape(msg, 12, 16);
-%  for I = 1:3
-%    z = zeros(1,16);
-%    msg = [msg;z];
-%  endfor
-msg = [msg,zeros(1,48)];
-msg = reshape(msg, 15, 16);
-[c, g] = reedmullerenc (transpose(msg), 3, 4);
-bitstr = reshape(c, 1, 256);%toBits(instr);%
-WMWork = embedBits(imOrg, bitstr, pos);
-eq(imOrg,WMWork);
-disp(typeinfo(WMWork));
-imwrite(WMWork,"watermarkedwork.png");
-%%works fine so far......
+ [c, g] = reedmullerenc (transpose(msg), 3, 4);
+ bitstr = reshape(c, 1, 256);
+ WMWork = embedBits(imOrg, bitstr, pos);
+ disp(typeinfo(WMWork));
+ imwrite(WMWork,"tttttt.png");
 
-imWM=imread('watermarkedwork.png');
-bitseqnc = getBits(imWM, pos);
-%%Somehow by changing the lines 59&82 i got 1x232 array result. 
-%%You can find the previous version in backup3.m
-str = toString(bitseqnc);
-%%adding 24 zeros to complete 
-%%the array 256 which can be reshape into 16x16 array
-str = [str,zeros(1,24)];
 
-[dec_c, dec_m] = reedmullerdec (reshape(str,16,16), g, 3, 4)
-resultString = toStr(reshape(dec_m,1,240));%%this is supposed to convert into string but it doesn't work
+ imWM=imread('tttttt.png');
+ disp('get bits');
+ bitseq = getBits(imWM, pos);
+ result = toString(bitseq);
+ %resultInBytes = toBits(result);
+ %resultInBytes = resize(resultInBytes, 1, 256);
+ %resultInBytes = reshape(resultInBytes, 16, 16)
+ %[dec_c, dec_m] = reedmullerdec (resultInBytes, g, 3, 4);
+ %resTextInBits = reshape(dec_m, 1, 240);
+ %text = toString(resTextInBits);
+ %disp(text);
+ %resultInBytes = resize(resultInBytes,1,192);
+ %text = toString(resultInBytes);
+ %z = zeros(1,1892);
+ %bitseq = [bitseq, z];
+ %c2 = reshape(bitseq,2048,154);
+ %[dec_c, dec_m] = reedmullerdec (c2, g, 3, 11);
+ %disp(transpose(dec_m));
+ %result = dec_m;
+ %result = reshape(result,1,240);
+ %disp("result matrix");
+ %disp(result);
+ 
+ %
+
+
+
 
 break;
