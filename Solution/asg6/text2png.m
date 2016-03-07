@@ -30,10 +30,9 @@ function bitstr = toBits(str)
   endfor
 endfunction
 
-function resMtrx = toString(bitstr)
+function resMtrx = retrieve(bitstr)
   [q, maxanz] = size(bitstr);
   str='';
-  subbytsstr = [];
   start = 1;
   startok = 0;
   
@@ -78,16 +77,10 @@ function resMtrx = toString(bitstr)
     else
       byte = 0;
       for I=1:8
-        byte=2*byte + subA(I);
         resMtrx = [resMtrx, subA(I)];
       endfor
-      subbytsstr = [subbytsstr, byte];
     endif
   endwhile
-  [q, anzchar] = size(subbytsstr);
-  if anzchar>0
-    str = char(subbytsstr);
-  endif
 endfunction
 
 function im = embedBits(im, bitSeq, pos)
@@ -119,34 +112,15 @@ function bitSeq = getBits(im, pos)
 endfunction
 
 function str = toStr(bitstr)
-  aktpos=0  
-  [q, maxanz] = size(bitstr);
-  while aktpos <= maxanz
-    nextA = 0;
-    anzN = 0;
-    subA = [];
-    while nextA<8 && aktpos <= maxanz
-      subA = [subA, bitstr(aktpos)];
-      if bitstr(aktpos)==0
-        anzN++;
-      else
-        anzN=0;
-      endif
-      nextA++;
-      aktpos++;
-    endwhile
-    if anzN==8 
-      aktpos=maxanz+1;
-    elseif nextA != 8 
-      aktpos=maxanz+1;
-    else
+  aktpos=0    
+  subbytsstr = [];
+  while aktpos < 240
       byte = 0;
       for I=1:8
-        byte=2*byte + subA(I);
-        resMtrx = [resMtrx, subA(I)];
+        byte=2*byte + bitstr(I + aktpos);
       endfor
       subbytsstr = [subbytsstr, byte];
-    endif
+      aktpos = aktpos + 8;    
   endwhile
   [q, anzchar] = size(subbytsstr);
   if anzchar>0
@@ -164,31 +138,29 @@ disp('get image');
 imOrg=imread('test01.jpg');
 
 msg = toBits(instr);
-% msg = reshape(msg, 12, 16);
-%  for I = 1:3
-%    z = zeros(1,16);
-%    msg = [msg;z];
-%  endfor
+
+%%to make the messages column size after reshaping with 
+%%the row size of generation matrix we add zeros at the end of it
 msg = [msg,zeros(1,48)];
 msg = reshape(msg, 15, 16);
+
+%%encoding
 [c, g] = reedmullerenc (transpose(msg), 3, 4);
-bitstr = reshape(c, 1, 256);%toBits(instr);%
+
+%%reshaping encoded payload to embed into the original work
+bitstr = reshape(c, 1, 256);
 WMWork = embedBits(imOrg, bitstr, pos);
 eq(imOrg,WMWork);
 disp(typeinfo(WMWork));
 imwrite(WMWork,"watermarkedwork.png");
-%%works fine so far......
+
 
 imWM=imread('watermarkedwork.png');
 bitseqnc = getBits(imWM, pos);
-%%Somehow by changing the lines 59&82 i got 1x232 array result. 
-%%You can find the previous version in backup3.m
-str = toString(bitseqnc);
-%%adding 24 zeros to complete 
-%%the array 256 which can be reshape into 16x16 array
+str = retrieve(bitseqnc);
 str = [str,zeros(1,24)];
 
 [dec_c, dec_m] = reedmullerdec (reshape(str,16,16), g, 3, 4)
-resultString = toStr(reshape(dec_m,1,240));%%this is supposed to convert into string but it doesn't work
+resultString = toStr(reshape(dec_m,1,240));
 
 break;
